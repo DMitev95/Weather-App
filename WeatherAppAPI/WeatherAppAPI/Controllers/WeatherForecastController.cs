@@ -19,9 +19,10 @@ namespace WeatherAppAPI.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<WeatherForecast> Get([FromQuery] string city)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var ci = city;
+            return Enumerable.Range(1, 1).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
