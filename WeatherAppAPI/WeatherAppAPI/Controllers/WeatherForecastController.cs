@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace WeatherAppAPI.Controllers
 {
@@ -6,6 +8,7 @@ namespace WeatherAppAPI.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        private static readonly string APIKey = "ee59d4f915912231c84736af71086070";
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -18,17 +21,25 @@ namespace WeatherAppAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get([FromQuery] string city)
+        [HttpGet(Name = "WeatherForecast")]
+        public async Task<WeatherForecast> Get([FromQuery] string city)
         {
             var ci = city;
-            return Enumerable.Range(1, 1).Select(index => new WeatherForecast
+            return await GetWeatherInfo(ci);
+        }
+
+        private async Task<WeatherForecast> GetWeatherInfo(string city)
+        {
+            var reservationList = new WeatherForecast();
+            using (var httpClient = new HttpClient())
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                var response = await httpClient.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat=43.204666&lon=27.910543&appid={APIKey}");
+                
+                var apiResponse = await response.Content.ReadAsStringAsync();
+                reservationList = JsonConvert.DeserializeObject<WeatherForecast>(apiResponse);
+                
+            }
+            return reservationList;
         }
     }
 }
