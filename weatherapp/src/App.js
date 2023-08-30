@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import cloudy from "./Assets/WheatherIcons/cloudy.png";
-import hotBg from "./Assets/hot.jpg";
 import coldBg from "./Assets/cold.jpg";
+import sunnyBg from "./Assets/SunnyWeather.jpg";
 
 import "./App.css";
 import Search from "./Components/Search/Search";
@@ -15,14 +15,13 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await Search("varna", units);
-      // console.log(data);
       setWeather(data);
     };
     fetchData();
   }, []);
 
   return (
-    <div className="app" style={{ backgroundImage: `url(${coldBg})` }}>
+    <div className="app" style={{ backgroundImage: `url(${sunnyBg})` }}>
       <div className="overlay">
         {weather && (
           <div className="container">
@@ -42,14 +41,13 @@ function App() {
               <div className="temperature">
                 {/* Curent temperature */}
                 <h1>
-                  {" "}
                   {`${weather.temp.toFixed()} °${
                     units === "metric" ? "C" : "F"
                   }`}
                 </h1>
               </div>
             </div>
-            <Description weather={weather} />
+            <Description weather={weather} units={units} />
           </div>
         )}
       </div>

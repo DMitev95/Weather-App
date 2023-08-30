@@ -9,10 +9,6 @@ namespace WeatherAppAPI.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string APIKey = "ee59d4f915912231c84736af71086070";
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
 
         private readonly ILogger<WeatherForecastController> _logger;
 
@@ -30,18 +26,36 @@ namespace WeatherAppAPI.Controllers
 
         private async Task<WeatherForecast> GetWeatherInfo(string city, string units)
         {
-            var reservationList = new WeatherForecast();
+            var geoLocation = await GetGeoLocation(city);
+            var weatherInfo = new WeatherForecast();
             using (var httpClient = new HttpClient())
             {
             
-                var response = await httpClient.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat=43.204666&lon=27.910543&appid={APIKey}&units={units}");
+                var response = await httpClient.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat={geoLocation.Lat.Value}&lon={geoLocation.Lon.Value}&appid={APIKey}&units={units}");
 
 
                 var apiResponse = await response.Content.ReadAsStringAsync();
-                reservationList = JsonConvert.DeserializeObject<WeatherForecast>(apiResponse);
+                weatherInfo = JsonConvert.DeserializeObject<WeatherForecast>(apiResponse);
                 
             }
-            return reservationList;
+            return weatherInfo;
+        }
+
+        private async Task<GeoLocation> GetGeoLocation(string city)
+        {
+            var geoLocationInfo = new List<GeoLocation>();
+            using (var httpClient = new HttpClient())
+            {
+
+                var response = await httpClient.GetAsync($"http://api.openweathermap.org/geo/1.0/direct?q={city}&appid={APIKey}");
+
+
+                var apiResponse = await response.Content.ReadAsStringAsync();
+                geoLocationInfo = JsonConvert.DeserializeObject<List<GeoLocation>>(apiResponse);
+
+            }
+
+            return geoLocationInfo[0];
         }
     }
 }
