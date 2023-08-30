@@ -10,10 +10,11 @@ import Description from "./Components/Description";
 
 function App() {
   const [weather, setWeather] = useState(null);
+  const [units, setUnits] = useState("metric");
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await Search("varna");
+      const data = await Search("varna", units);
       // console.log(data);
       setWeather(data);
     };
@@ -32,15 +33,20 @@ function App() {
             <div className="section section__temperature">
               <div className="icon">
                 {/* Here will be the name and the country. */}
-                <h3>Varna, BG</h3>
+                <h3>{`${weather.name}, ${weather.country}`}</h3>
                 {/* The URL to the image */}
-                <img src={cloudy} />
+                <img src={weather.iconURL} />
                 {/* This will be the description */}
-                <h3>Cloudy</h3>
+                <h3>{weather.description}</h3>
               </div>
               <div className="temperature">
                 {/* Curent temperature */}
-                <h1> {weather.temperatureC} °C</h1>
+                <h1>
+                  {" "}
+                  {`${weather.temp.toFixed()} °${
+                    units === "metric" ? "C" : "F"
+                  }`}
+                </h1>
               </div>
             </div>
             <Description weather={weather} />

@@ -22,19 +22,21 @@ namespace WeatherAppAPI.Controllers
         }
 
         [HttpGet(Name = "WeatherForecast")]
-        public async Task<WeatherForecast> Get([FromQuery] string city)
+        public async Task<WeatherForecast> Get([FromQuery] string city, string units)
         {
             var ci = city;
-            return await GetWeatherInfo(ci);
+            return await GetWeatherInfo(ci, units);
         }
 
-        private async Task<WeatherForecast> GetWeatherInfo(string city)
+        private async Task<WeatherForecast> GetWeatherInfo(string city, string units)
         {
             var reservationList = new WeatherForecast();
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat=43.204666&lon=27.910543&appid={APIKey}");
-                
+            
+                var response = await httpClient.GetAsync($"https://api.openweathermap.org/data/2.5/weather?lat=43.204666&lon=27.910543&appid={APIKey}&units={units}");
+
+
                 var apiResponse = await response.Content.ReadAsStringAsync();
                 reservationList = JsonConvert.DeserializeObject<WeatherForecast>(apiResponse);
                 
