@@ -6,9 +6,8 @@ namespace WeatherAppAPI.Services
 {
     public class WeatherServices : IWeatherServices
     {
-        public async Task<WeatherForecast> GetWeatherInfo(string city, string units)
+        public async Task<WeatherForecast> GetWeatherInfo(string city, string units, string key)
         {
-            var key = GetAPIKey();
             var geoLocation = await GetGeoLocation(city, key);
             var weatherInfo = new WeatherForecast();
             using (var httpClient = new HttpClient())
@@ -38,13 +37,6 @@ namespace WeatherAppAPI.Services
             }
 
             return geoLocationInfo[0];
-        }
-
-        private string GetAPIKey()
-        {
-            var configuration = new ConfigurationBuilder().AddJsonFile($"appsettings.json");
-            var config = configuration.Build();
-            return config.GetValue<string>("WeatherAPIKey:Key");
         }
     }
 }
