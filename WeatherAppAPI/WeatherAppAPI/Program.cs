@@ -1,3 +1,6 @@
+using WeatherAppAPI.Services;
+using WeatherAppAPI.Services.Contracts;
+
 namespace WeatherAppAPI
 {
     public class Program
@@ -22,6 +25,7 @@ namespace WeatherAppAPI
                                                               .AllowAnyMethod();
                                       });
             });
+            builder.Services.AddScoped<IWeatherServices, WeatherServices>();
 
             var app = builder.Build();
 

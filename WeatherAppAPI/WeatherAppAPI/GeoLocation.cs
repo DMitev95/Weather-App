@@ -2,9 +2,7 @@
 
 namespace WeatherAppAPI
 {
-
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);
-   
+  
     public class GeoLocation
     {
         [JsonProperty("name")]
