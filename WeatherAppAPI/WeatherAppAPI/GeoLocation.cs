@@ -8,9 +8,6 @@ namespace WeatherAppAPI
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("local_names")]
-        public Dictionary<string, string> LocalNames { get; set; }
-
         [JsonProperty("lat")]
         public double? Lat { get; set; }
 
