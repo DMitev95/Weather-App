@@ -1,4 +1,3 @@
-import { AsyncPaginate } from "react-select-async-paginate";
 import { apiURL, apiOptions } from "../../API";
 
 const makeIconURL = (iconId) =>
@@ -9,9 +8,6 @@ const Search = async (city, units) => {
     .then((respose) => respose.json())
     .then((data) => data)
     .catch((err) => console.error(err));
-  console.log(apiURL + `${city}`);
-  console.log(data);
-  console.log(city);
 
   const {
     weather,
