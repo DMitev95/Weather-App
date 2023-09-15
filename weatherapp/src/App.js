@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import cloudy from "./Assets/WheatherIcons/cloudy.png";
 import sunny from "./Assets/WheatherIcons/sunny.png";
+import fewClouds from "./Assets/WheatherIcons/fewClouds.png";
+
 import coldBg from "./Assets/cold.jpg";
 import sunnyBg from "./Assets/SunnyWeather.jpg";
 
@@ -39,10 +41,18 @@ function App() {
       // dynamic bg
       const temperature = units === "metric" ? 20 : 60;
 
-      if (weather.description === "clear sky") {
-        setBg(coldBg);
-        setWeatherIcon(sunny);
-      }
+      // if (weather.description === "clear sky") {
+      //   setBg(coldBg);
+      //   setWeatherIcon(sunny);
+      // } else if (
+      //   weather.description === "broken clouds" &&
+      //   weather.description === "scattered clouds"
+      // ) {
+      //   setBg(coldBg);
+      //   setWeatherIcon(cloudy);
+      // } else if (weather.description === "few clouds") {
+      //   setWeatherIcon(fewClouds);
+      // }
     };
     fetchData();
   }, [units, city, weather.description]);
@@ -66,7 +76,7 @@ function App() {
                 {/* Here will be the name and the country. */}
                 <h3>{`${weather.name}, ${weather.country}`}</h3>
                 {/* The URL to the image */}
-                <img src={weatherIcon} />
+                <img src={weather.iconURL} />
                 {/* This will be the description */}
                 <h3>{weather.description}</h3>
               </div>
